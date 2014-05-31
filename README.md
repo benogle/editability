@@ -1,7 +1,37 @@
 # Editability
 
+Provides a dead simple js editors for single and multiline inline editing.
+
+## Dependencies
+
+jQuery is all you need.
+
 ## Usage
 
+```html
+<div class="comment">
+  <h2 class="title editable">zomgkittens</h2>
+  <div class="content editable">Yep, this is a comment.</div>
+</div>
+```
+
+```coffee
+commentModel = # some model
+container = $('.comment')
+editableElement = $('.comment .title')
+Editability.Editor.instance().edit container, {editableElement, content: model.get('title')}, (content) =>
+  # Save the content to the server
+  model.save {title: content}
+
+  # You must explicitly update it, or let your binding framework do it!
+  editableElement.text(content)
+```
+
+It will hide your `editableElement`, and append the editor after the `editableElement`. When the user clicks save or hits `cmd+enter`, it will call your callback.
+
+### Styling
+
+There is no default styling. Do it yourself!
 
 ## Local development
 
