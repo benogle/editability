@@ -1,7 +1,7 @@
 window.Editability = {}
 
 # An inline content editor with an input
-class Editability.MultilineEditor
+class Editability.Editor
   template: """
     <span class="inline-editor">
       <input type="text" class="form-control">
