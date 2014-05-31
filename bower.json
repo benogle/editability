@@ -3,7 +3,7 @@
   "description": "Editability",
   "version": "0.1.0",
   "main": [
-    "./javascripts/editabilty.coffee"
+    "./editabilty.coffee"
   ],
   "ignore": [
     ".*",
