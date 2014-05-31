@@ -1,0 +1,30 @@
+{
+  "name": "editability",
+  "description": "JS inline editor",
+  "version": "0.0.0",
+  "keywords": [
+    "inline edit",
+    "editability"
+  ],
+  "homepage": "https://github.com/benogle/editability",
+  "author": "Ben Ogle",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/benogle/editability.git"
+  },
+  "bugs": {
+    "url": "https://github.com/benogle/editability/issues"
+  },
+  "license": {
+    "type": "MIT",
+    "url": "https://github.com/benogle/editability/blob/master/LICENSE.md"
+  },
+  "devDependencies": {
+    "coffee-script": "~1.7.1",
+    "grunt": "~0.4.2",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-contrib-coffee": "~0.10.1",
+    "load-grunt-tasks": "~0.4.0",
+    "time-grunt": "~0.2.10"
+  }
+}
