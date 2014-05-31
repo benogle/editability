@@ -33,6 +33,45 @@ It will hide your `editableElement`, and append the editor after the `editableEl
 
 There is no default styling. Do it yourself!
 
+### Changing templates
+
+Subclass one of the editors, and provide your own template.
+
+```coffee
+class MyEditor extends Editability.Editor
+  template: """
+    <span class="inline-editor">
+      <input type="text" class="whatever-i-want">
+      <button class="cray-btn">Cancel</button>
+      <button class="cray-btn">Save</button>
+    </span>
+  """
+  fieldSelector: 'input'
+```
+
+Default template for `Editability.Editor`:
+
+```html
+<span class="inline-editor">
+  <input type="text" class="form-control">
+  <button class="btn btn-default btn-cancel">Cancel</button>
+  <button class="btn btn-primary btn-save">Save</button>
+</span>
+```
+
+For the `Editability.MultilineEditor`:
+
+```html
+<div class="inline-editor">
+  <div class="form-group">
+    <textarea class="form-control"></textarea>
+  </div>
+  <button class="btn btn-default btn-sm btn-cancel">Cancel</button>
+  <button class="btn btn-primary btn-sm btn-save pull-right">Save</button>
+</div>
+```
+
+
 ## Local development
 
 ### If you already have grunt and bower
