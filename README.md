@@ -1,6 +1,6 @@
 # Editability
 
-Provides a dead simple js editors for single and multiline inline editing.
+Provides dead simple js editors for single and multiline inline editing.
 
 ## Dependencies
 
