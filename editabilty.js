@@ -5,19 +5,19 @@
 
   window.Editability = {};
 
-  Editability.MultilineEditor = (function() {
-    MultilineEditor.prototype.template = "<span class=\"inline-editor\">\n  <input type=\"text\" class=\"form-control\">\n  <button class=\"btn btn-default btn-cancel\">Cancel</button>\n  <button class=\"btn btn-primary btn-save\">Save</button>\n</span>";
+  Editability.Editor = (function() {
+    Editor.prototype.template = "<span class=\"inline-editor\">\n  <input type=\"text\" class=\"form-control\">\n  <button class=\"btn btn-default btn-cancel\">Cancel</button>\n  <button class=\"btn btn-primary btn-save\">Save</button>\n</span>";
 
-    MultilineEditor.prototype.fieldSelector = 'input';
+    Editor.prototype.fieldSelector = 'input';
 
-    MultilineEditor.instance = function() {
+    Editor.instance = function() {
       if (!this._instance) {
         this._instance = new this.prototype.constructor();
       }
       return this._instance;
     };
 
-    function MultilineEditor() {
+    function Editor() {
       this.stopEditing = __bind(this.stopEditing, this);
       this.save = __bind(this.save, this);
       this.el = $(this.template);
@@ -46,7 +46,7 @@
       })(this));
     }
 
-    MultilineEditor.prototype.edit = function(container, _arg, callback) {
+    Editor.prototype.edit = function(container, _arg, callback) {
       var content, editableElement;
       editableElement = _arg.editableElement, content = _arg.content;
       this.stopEditing();
@@ -75,7 +75,7 @@
       return this.editor.select();
     };
 
-    MultilineEditor.prototype.save = function() {
+    Editor.prototype.save = function() {
       if (this.editor.val()) {
         if (this.current) {
           this.current.callback(this.editor.val());
@@ -84,7 +84,7 @@
       }
     };
 
-    MultilineEditor.prototype.stopEditing = function() {
+    Editor.prototype.stopEditing = function() {
       if (!this.current) {
         return;
       }
@@ -95,7 +95,7 @@
       return this.current = null;
     };
 
-    return MultilineEditor;
+    return Editor;
 
   })();
 
