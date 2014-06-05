@@ -28,7 +28,7 @@ class Editability.Editor
   # `container` is the container element of the thing to edit. So the .comment.
   # It will look for an element with the class `.editable`. The editor will be
   # placed next to this .editable element.
-  edit: (container, {editableElement, content}, callback) ->
+  edit: (container, {editableElement, content, mustHaveContent}, callback) ->
     @stopEditing()
 
     unless editableElement
@@ -39,7 +39,7 @@ class Editability.Editor
 
     editableElement = editableElement.eq(0) if editableElement.length > 1
 
-    @current = {container, editableElement, callback}
+    @current = {container, editableElement, mustHaveContent, callback}
 
     container.addClass('editing')
 
@@ -54,9 +54,12 @@ class Editability.Editor
     @editor.select()
 
   save: =>
-    if @editor.val()
+    if not @current.mustHaveContent or @current.mustHaveContent and @editor.val()
       @current.callback(@editor.val()) if @current
       @stopEditing()
+
+  focus: ->
+    @editor.focus()
 
   stopEditing: =>
     return unless @current
