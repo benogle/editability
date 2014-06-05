@@ -47,8 +47,8 @@
     }
 
     Editor.prototype.edit = function(container, _arg, callback) {
-      var content, editableElement;
-      editableElement = _arg.editableElement, content = _arg.content;
+      var content, editableElement, mustHaveContent;
+      editableElement = _arg.editableElement, content = _arg.content, mustHaveContent = _arg.mustHaveContent;
       this.stopEditing();
       if (!editableElement) {
         editableElement = container.is('.editable') ? container : container.find('.editable');
@@ -59,6 +59,7 @@
       this.current = {
         container: container,
         editableElement: editableElement,
+        mustHaveContent: mustHaveContent,
         callback: callback
       };
       container.addClass('editing');
@@ -76,12 +77,16 @@
     };
 
     Editor.prototype.save = function() {
-      if (this.editor.val()) {
+      if (!this.current.mustHaveContent || this.current.mustHaveContent && this.editor.val()) {
         if (this.current) {
           this.current.callback(this.editor.val());
         }
         return this.stopEditing();
       }
+    };
+
+    Editor.prototype.focus = function() {
+      return this.editor.focus();
     };
 
     Editor.prototype.stopEditing = function() {
