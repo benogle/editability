@@ -50,16 +50,23 @@ class Editability.Editor
     @editor.focus()
     @editor.select()
 
+    setTimeout =>
+      $(document).on 'click', @onDocumentClick
+    , 0
+
   save: =>
     if not @current.mustHaveContent or @current.mustHaveContent and @editor.val()
       @current.callback(@editor.val()) if @current
       @stopEditing()
 
-  focus: ->
-    @editor.focus()
+  cancel: -> @stopEditing()
+
+  focus: -> @editor.focus()
 
   stopEditing: =>
     return unless @current
+
+    $(document).off 'click', @onDocumentClick
 
     @editor.trigger('autosize.destroy')
     @el.detach()
@@ -67,6 +74,21 @@ class Editability.Editor
     @current.container.removeClass('editing')
     @current.editableElement.show()
     @current = null
+
+  onDocumentClick: (event) =>
+    clickIsInEditor = false
+
+    {target} = event
+    while target?
+      clickIsInEditor = true if target == @el[0]
+      break if clickIsInEditor
+      target = target.parentNode
+
+    @cancel() unless clickIsInEditor
+
+  onKeyDown: (event) =>
+    @save() if event.keyCode == 13
+    @stopEditing() if event.keyCode == 27
 
 class Editability.MultilineEditor extends Editability.Editor
   template: """
