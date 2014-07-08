@@ -20,7 +20,7 @@ class Editability.Editor
     @editor = @el.find(@fieldSelector)
 
     @el.on 'click', '.btn-save', => @save(); false
-    @el.on 'click', '.btn-cancel', => @stopEditing(); false
+    @el.on 'click', '.btn-cancel', => @cancel(); false
     @el.on 'keydown', @fieldSelector, @onKeyDown
 
   # `container` is the container element of the thing to edit. So the .comment.
@@ -36,7 +36,7 @@ class Editability.Editor
         container.find('.editable')
     editableElement = editableElement.eq(0) if editableElement.length > 1
 
-    @current = {container, editableElement, mustHaveContent, callback}
+    @current = {container, content, editableElement, mustHaveContent, callback}
 
     container.addClass('editing')
 
@@ -56,10 +56,15 @@ class Editability.Editor
 
   save: =>
     if not @current.mustHaveContent or @current.mustHaveContent and @editor.val()
-      @current.callback(@editor.val()) if @current
+      {callback} = @current if @current?
+      newValue = @editor.val()
       @stopEditing()
+      callback(newValue) if callback?
 
-  cancel: -> @stopEditing()
+  cancel: ->
+    {callback, content} = @current if @current?
+    @stopEditing()
+    callback(null, content) if callback?
 
   focus: -> @editor.focus()
 
@@ -88,7 +93,7 @@ class Editability.Editor
 
   onKeyDown: (event) =>
     @save() if event.keyCode == 13
-    @stopEditing() if event.keyCode == 27
+    @cancel() if event.keyCode == 27
 
 class Editability.MultilineEditor extends Editability.Editor
   template: """
@@ -104,4 +109,4 @@ class Editability.MultilineEditor extends Editability.Editor
 
   onKeyDown: (event) =>
     @save() if event.metaKey and event.keyCode == 13
-    @stopEditing() if event.keyCode == 27
+    @cancel() if event.keyCode == 27
