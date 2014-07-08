@@ -21,9 +21,7 @@ class Editability.Editor
 
     @el.on 'click', '.btn-save', => @save(); false
     @el.on 'click', '.btn-cancel', => @stopEditing(); false
-    @el.on 'keydown', @fieldSelector, (event) =>
-      @save() if event.metaKey and event.keyCode == 13
-      @stopEditing() if event.keyCode == 27
+    @el.on 'keydown', @fieldSelector, @onKeyDown
 
   # `container` is the container element of the thing to edit. So the .comment.
   # It will look for an element with the class `.editable`. The editor will be
@@ -36,14 +34,13 @@ class Editability.Editor
         container
       else
         container.find('.editable')
-
     editableElement = editableElement.eq(0) if editableElement.length > 1
 
     @current = {container, editableElement, mustHaveContent, callback}
 
     container.addClass('editing')
 
-    @el.insertAfter editableElement
+    @el.insertAfter(editableElement)
     editableElement.hide()
 
     @editor.val(content)
@@ -82,3 +79,7 @@ class Editability.MultilineEditor extends Editability.Editor
     </div>
   """
   fieldSelector: 'textarea'
+
+  onKeyDown: (event) =>
+    @save() if event.metaKey and event.keyCode == 13
+    @stopEditing() if event.keyCode == 27
