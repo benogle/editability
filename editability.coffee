@@ -44,9 +44,8 @@ class Editability.Editor
     editableElement.hide()
 
     @editor.val(content)
-    if @fieldSelector == 'textarea'
-      @editor.attr('rows', (content or '').split('\n').length)
-      @editor.autosize() if @editor.autosize
+    if @fieldSelector == 'textarea' and @editor.autosize
+      @editor.autosize(callback: => @el.trigger('autosize.resize')).trigger('autosize.resize')
     @editor.focus()
     @editor.select()
 
@@ -99,7 +98,7 @@ class Editability.MultilineEditor extends Editability.Editor
   template: """
     <div class="inline-editor">
       <div class="form-group">
-        <textarea class="form-control"></textarea>
+        <textarea rows="1" class="form-control"></textarea>
       </div>
       <button class="btn btn-default btn-sm btn-cancel">Cancel</button>
       <button class="btn btn-primary btn-sm btn-save pull-right">Save</button>
