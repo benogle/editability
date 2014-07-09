@@ -10,6 +10,7 @@ class Editability.Editor
     </span>
   """
   fieldSelector: 'input'
+  siblingEditorClasses: []
 
   @instance: ->
     @_instance = new @prototype.constructor() unless @_instance
@@ -28,11 +29,14 @@ class Editability.Editor
     @el.on 'click', '.btn-cancel', => @cancel(); false
     @el.on 'keydown', @fieldSelector, @onKeyDown
 
+  addSiblingEditorClass: (editorClass) ->
+    @siblingEditorClasses.push(editorClass)
+
   # `container` is the container element of the thing to edit. So the .comment.
   # It will look for an element with the class `.editable`. The editor will be
   # placed next to this .editable element.
   edit: (container, {editableElement, content, mustHaveContent}, callback) ->
-    @cancel() if @current?
+    @cancelSiblingEditors()
     @createElement()
 
     unless editableElement
@@ -83,6 +87,12 @@ class Editability.Editor
     @current.container.removeClass('editing')
     @current.editableElement.show()
     @current = null
+
+  cancelSiblingEditors: ->
+    @cancel() if @current?
+    for siblingClass in @siblingEditorClasses
+      siblingEditor = siblingClass.instance()
+      siblingEditor.cancel() unless siblingEditor == this
 
   onDocumentClick: (event) =>
     clickIsInEditor = false
