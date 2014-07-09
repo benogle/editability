@@ -15,7 +15,12 @@ class Editability.Editor
     @_instance = new @prototype.constructor() unless @_instance
     @_instance
 
-  constructor: ->
+  destroyElement: ->
+    @editor.trigger('autosize.destroy')
+    @el.remove()
+    @el = null
+
+  createElement: ->
     @el = $(@template)
     @editor = @el.find(@fieldSelector)
 
@@ -27,7 +32,8 @@ class Editability.Editor
   # It will look for an element with the class `.editable`. The editor will be
   # placed next to this .editable element.
   edit: (container, {editableElement, content, mustHaveContent}, callback) ->
-    @stopEditing()
+    @cancel() if @current?
+    @createElement()
 
     unless editableElement
       editableElement = if container.is('.editable')
@@ -72,8 +78,7 @@ class Editability.Editor
 
     $(document).off 'click', @onDocumentClick
 
-    @editor.trigger('autosize.destroy')
-    @el.detach()
+    @destroyElement()
 
     @current.container.removeClass('editing')
     @current.editableElement.show()
